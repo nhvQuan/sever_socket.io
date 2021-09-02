@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REWES</title>
+    <link rel="icon" type="image/png" href="https://cdn.glitch.com/72508b62-879c-4bcd-9f45-847e6b54c5ea%2FlogoRE.jpg?v=1623406345951">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        h1 {
+            color: black;
+        }
+        
+        h2 {
+            color: blue;
+        }
+        
+        .block1 {
+            display: flex;
+            flex-direction: row;
+            background-color: white;
+            border: none;
+            color: black;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 1030px;
+            height: 60px;
+            cursor: pointer;
+           
+            margin-top: 0.5%;
+            
+        }
+        .block2 {
+          display: flex;
+            flex-direction: row;
+            background-color: white;
+            border: none;
+            color: orange;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 1030px;
+            height: 60px;
+            cursor: pointer;
+           
+            margin-top: 0.5%;
+
+        }
+        .block {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            border: 1px solid blue;
+            border-radius: 25px;
+            padding: 15px;
+            width: 1000px;
+            margin-top: 10px;
+            background-color: #f8e918;
+        }
+        
+        .temp {
+            flex-direction: row;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            width: 120px;
+            margin-left: 15px;
+        }
+        
+        .tempVal {
+            flex-direction: row;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: rgb(2, 18, 243);
+            font-weight: 500;
+        }
+        
+        .tempUnit {
+            flex-direction: row;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: rgb(2, 18, 243);
+        }
+        
+        .tempO {
+            color: rgb(2, 18, 243);
+            font-size: 15px;
+            margin: 2px;
+        }
+        
+        .button {
+            display: flex;
+            flex-direction: row;
+            background-color: #e7e7e7;
+            border: none;
+            color: rgb(158, 155, 155);
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 100px;
+            height: 60px;
+            cursor: pointer;
+        }
+        
+        .button:focus {
+            outline: none;
+        }
+      .server {
+        display: inline-block;
+      }
+        .btn {
+            border: none;
+            outline: none;
+            padding: 10px 10px;
+            background-color: #f1f1f1;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 2px;
+            border-radius: 5px;
+        }
+        /* Style the active class, and buttons on mouse-over */
+        
+        .active,
+        .btn:hover {
+            background-color: rgb(77, 79, 255);
+            color: white;
+        }
+        .button1 {
+            display: flex;
+            flex-direction: row;
+            background-color: Blue;
+            border: none;
+            color: white;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 1030px;
+            height: 60px;
+            cursor: pointer;
+           
+            margin-top: 0.5%;
+        }
+      .imgz {
+            flex-direction: row;
+            display: flex;
+            align-items: flex-start;
+            justify-content: right;
+            width: 120px;
+            margin-left: 20px;
+      }
+    </style>
+
+</head>
+
+<body>
+  <div class ="block1" >
+    <p> REWES V1.0 </p>
+    <div class="imgz">
+    <img src="https://cdn.glitch.com/72508b62-879c-4bcd-9f45-847e6b54c5ea%2FlogoRE.jpg?v=1623406345951"  width="200" height="65">
+    </div>
+  </div>
+        <div id="date" class ="block2">
+  </div>
+        
+    <div id="server-status" class="server"></div>
+    <div id="server-status-station" class="server"></div>
+    
+    <script>
+        
+    </script>
+    <div id="stations"></div>
+    <div class="block">
+        <h1>Temp - Humi</h1>
+        <div class="temp">
+            <div class="tempVal" id="tempC"></div>
+            <div class="tempO">o</div>
+            <div class="tempUnit">C</div>
+        </div>
+        <div class="temp">
+            <div class="tempVal" id="humi"></div>
+            <div class="tempO"></div>
+            <div class="tempUnit">%</div>
+        </div>
+    </div>
+
+    <div class="block">
+        <h1>Total Counts</h1>
+        <div class="temp">
+            <div class="tempVal" id="counts"></div>
+            <div class="tempO"></div>
+            <div class="tempUnit"></div>
+        </div>
+    </div>
+    <div class="block">
+        <h1>Cps - uSv</h1>
+        <div class="temp">
+            <div class="tempVal" id="cps"></div>
+            <div class="tempO"></div>
+            <div class="tempUnit">cps</div>
+        </div>
+        <div class="temp">
+            <div class="tempVal" id="uSv"></div>
+            <div class="tempO"></div>
+            <div class="tempUnit">uSv/h</div>
+        </div>
+    </div>
+    <a href="https://api-rewes.glitch.me" class="button1" target = "_blank">Data-Station</a>
+    <script>
+        var stationID = "";
+        var socket = io();
+        
+      function dongho() {
+            var today = new Date();
+            var day = today.getDate()
+            var month = today.getMonth() + 1;
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (day < 10) {
+                day = "0" + day;
+            }
+            var date = day + '-' + month + '-' + today.getFullYear();
+            var gio = today.getHours();
+            var phut = today.getMinutes();
+            var giay = today.getSeconds();
+            if (gio < 10)
+                gio = "0" + gio;
+            if (phut < 10)
+                phut = "0" + phut;
+            if (giay < 10)
+                giay = "0" + giay;
+            var time = gio + ":" + phut + ":" + giay;
+            var dateTime = date + " " + time;
+            setTimeout("dongho()", 1000);
+        }
+        dongho();
+      
+        socket.on("stations", msg => {
+            $("#stations").empty();
+            console.log(msg);
+            msg.forEach(element => {
+                let isActiveTxt = element.id === stationID ? "active" : "";
+                let txt = $(`<button id=${element.id} class="btn ${isActiveTxt}"></button>`).text(element.name);
+                $("#stations").append(txt);
+                $(`#${element.id}`).click(function() {
+                    stationID = element.id;
+                    console.log(element.name);
+                    socket.emit("join-room", element.id);
+                    let current = document.getElementsByClassName("active");
+                    
+                    console.log(current);
+                    if (current.length > 0) {
+                        current[0].className = current[0].className.replace("active", "");
+      
+                    }
+                    $(`#${element.id}`).addClass("active")
+                })
+            });
+        })
+
+        socket.on('temp2web', (msg) => {
+            $('#tempC').text(msg.tempC);
+            $('#humi').text(msg.humi);
+            $('#cps').text(msg.cps);
+            $('#uSv').text(msg.uSv);
+            $('#counts').text(msg.counts);
+            $('#server-status-station').text(msg.statusStation);
+            $('#date').text(msg.date);
+        })
+
+        socket.on("connect", () => {
+            console.log("user ", socket.id, " connected");
+            $("#server-status").text("Server connected")
+        });
+
+        socket.on("disconnect", () => {
+            console.log("user ", socket.id, " disconnected");
+            $("#server-status").text("Server disconnected");
+            $("#stations").empty();
+            $('#tempC').text("");
+            $('#cps').text("");
+            $('#uSv').text("");
+            $('#humi').text("");
+            $('#counts').text("");
+        });
+    </script>
+</body>
+
+</html>
